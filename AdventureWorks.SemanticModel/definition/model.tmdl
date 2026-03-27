@@ -1,0 +1,42 @@
+model Model
+	culture: en-IN
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["AW_Customers (dim)","AW_Product_Categories (dim)","AW_Product_Subcategories","AW_Products","AW_Returns (Fact)","AW_Sales_2015","AW_Sales_2016","AW_Sales_2017","AW_Territories","AW_Calendar","Sales_Fact","Measures (2)","Country Details"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table DateTableTemplate_2cda5c72-46f0-4160-8b33-47e1e49467fa
+ref table 'AW_Customers (dim)'
+ref table 'AW_Product_Categories (dim)'
+ref table AW_Product_Subcategories
+ref table AW_Products
+ref table 'AW_Returns (Fact)'
+ref table AW_Sales_2015
+ref table AW_Sales_2016
+ref table AW_Sales_2017
+ref table LocalDateTable_badf9386-9da6-40bd-9593-7ec75616f28b
+ref table AW_Territories
+ref table AW_Calendar
+ref table LocalDateTable_3b11f79c-5196-4485-8514-969349bec4ea
+ref table LocalDateTable_a749e3df-ee42-445c-a4b5-2c890eeca97a
+ref table LocalDateTable_dd408661-938b-42bf-be92-e15aac99b3e3
+ref table Sales_Fact
+ref table LocalDateTable_87b8252b-f1f6-45f4-8427-b55fc5ecc745
+ref table LocalDateTable_848e75b7-e597-4fc9-a61e-e9339f82a400
+ref table LocalDateTable_2d63c898-615f-4eb0-95b3-3181d6af2fa7
+ref table LocalDateTable_613cdf2d-2ebc-41a3-b926-3b625cdc45db
+ref table LocalDateTable_300c7e0d-fe7f-49f9-96ff-5bb01ed1a97b
+ref table LocalDateTable_e0d8aa63-7ecd-44ca-a363-b2fe2c3825b2
+ref table 'Measures (2)'
+ref table 'Adjustment Profit'
+ref table 'Country Details'
+
+ref cultureInfo en-IN
+

@@ -1,0 +1,321 @@
+table 'AW_Customers (dim)'
+	lineageTag: b9cc169d-1894-40e4-af13-02c79b91474c
+
+	column Birthyear = YEAR('AW_Customers (dim)'[BirthDate])
+		formatString: 0
+		lineageTag: 7feec494-9d01-4f39-ac40-c9970689de7e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column age = DATEDIFF('AW_Customers (dim)'[BirthDate],TODAY(),YEAR)
+		formatString: 0
+		lineageTag: f98489c5-268e-4314-a8d2-88221785ae93
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"AW_Customers (dim)","TableItemName":"age (groups)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column parent = IF('AW_Customers (dim)'[TotalChildren]=0,"NO","YES")
+		lineageTag: 5694ce9a-3caf-4b0b-a338-c53065c10fab
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer priority' = IF('AW_Customers (dim)'[age]<50 && 'AW_Customers (dim)'[AnnualIncome]>100000,"priority","standard")
+		lineageTag: caa9e3e9-c6eb-493d-ab3c-e5e8f7c61a82
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column switch
+		type: calculated
+		lineageTag: c6934ec4-4258-4816-b151-cc083e2c088b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'sal range' = SWITCH(true(),'AW_Customers (dim)'[AnnualIncome]>60000,"very high",'AW_Customers (dim)'[AnnualIncome]>45000,"high",'AW_Customers (dim)'[AnnualIncome]>15000,"medium","very low")
+		lineageTag: 97441a89-4809-4b8e-999c-49d310272310
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Full Name (dax)' = 'AW_Customers (dim)'[Prefix]&" "&'AW_Customers (dim)'[FirstName]&" "&'AW_Customers (dim)'[LastName]
+		lineageTag: fb61f072-f1ae-4f90-aa4b-3dcdc24c2588
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'age (groups)' =
+			SWITCH(
+			  TRUE,
+			  ISBLANK('AW_Customers (dim)'[age]),
+			  "(Blank)",
+			  'AW_Customers (dim)'[age] IN {42,
+			    43,
+			    44,
+			    45,
+			    46,
+			    47,
+			    48,
+			    49,
+			    50},
+			  "42-50",
+			  'AW_Customers (dim)'[age] IN {51,
+			    52,
+			    53,
+			    54,
+			    55,
+			    56,
+			    57,
+			    58,
+			    59,
+			    60},
+			  "51-60",
+			  'AW_Customers (dim)'[age] IN {61,
+			    62,
+			    63,
+			    64,
+			    65,
+			    66,
+			    67,
+			    68,
+			    69,
+			    70},
+			  "61-70",
+			  'AW_Customers (dim)'[age] IN {71,
+			    72,
+			    73,
+			    74,
+			    75,
+			    76,
+			    77,
+			    78,
+			    79,
+			    80},
+			  "71-80",
+			  'AW_Customers (dim)'[age] IN {81,
+			    82,
+			    83,
+			    84,
+			    85,
+			    86,
+			    87,
+			    88,
+			    89,
+			    90},
+			  "81-90",
+			  'AW_Customers (dim)'[age] IN {91,
+			    92,
+			    93,
+			    94,
+			    95,
+			    96,
+			    97,
+			    98,
+			    99,
+			    100},
+			  "91-100",
+			  'AW_Customers (dim)'[age] IN {101,
+			    102,
+			    103,
+			    104,
+			    105,
+			    106,
+			    107,
+			    109,
+			    110,
+			    111,
+			    112},
+			  "above 100",
+			  "Other"
+			)
+		lineageTag: 5114e8fd-7bf2-4321-ae53-40a861c0a5f9
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "AW_Customers (dim)"
+				          }
+				        },
+				        "Property": "age"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"a","Entity":"AW_Customers (dim)"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"a"}},"Property":"age"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"42-50","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"a"}},"Property":"age"}}],"Values":[[{"Literal":{"Value":"42L"}}],[{"Literal":{"Value":"43L"}}],[{"Literal":{"Value":"44L"}}],[{"Literal":{"Value":"45L"}}],[{"Literal":{"Value":"46L"}}],[{"Literal":{"Value":"47L"}}],[{"Literal":{"Value":"48L"}}],[{"Literal":{"Value":"49L"}}],[{"Literal":{"Value":"50L"}}]]}}},{"DisplayName":"51-60","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"a"}},"Property":"age"}}],"Values":[[{"Literal":{"Value":"51L"}}],[{"Literal":{"Value":"52L"}}],[{"Literal":{"Value":"53L"}}],[{"Literal":{"Value":"54L"}}],[{"Literal":{"Value":"55L"}}],[{"Literal":{"Value":"56L"}}],[{"Literal":{"Value":"57L"}}],[{"Literal":{"Value":"58L"}}],[{"Literal":{"Value":"59L"}}],[{"Literal":{"Value":"60L"}}]]}}},{"DisplayName":"61-70","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"a"}},"Property":"age"}}],"Values":[[{"Literal":{"Value":"61L"}}],[{"Literal":{"Value":"62L"}}],[{"Literal":{"Value":"63L"}}],[{"Literal":{"Value":"64L"}}],[{"Literal":{"Value":"65L"}}],[{"Literal":{"Value":"66L"}}],[{"Literal":{"Value":"67L"}}],[{"Literal":{"Value":"68L"}}],[{"Literal":{"Value":"69L"}}],[{"Literal":{"Value":"70L"}}]]}}},{"DisplayName":"71-80","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"a"}},"Property":"age"}}],"Values":[[{"Literal":{"Value":"71L"}}],[{"Literal":{"Value":"72L"}}],[{"Literal":{"Value":"73L"}}],[{"Literal":{"Value":"74L"}}],[{"Literal":{"Value":"75L"}}],[{"Literal":{"Value":"76L"}}],[{"Literal":{"Value":"77L"}}],[{"Literal":{"Value":"78L"}}],[{"Literal":{"Value":"79L"}}],[{"Literal":{"Value":"80L"}}]]}}},{"DisplayName":"81-90","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"a"}},"Property":"age"}}],"Values":[[{"Literal":{"Value":"81L"}}],[{"Literal":{"Value":"82L"}}],[{"Literal":{"Value":"83L"}}],[{"Literal":{"Value":"84L"}}],[{"Literal":{"Value":"85L"}}],[{"Literal":{"Value":"86L"}}],[{"Literal":{"Value":"87L"}}],[{"Literal":{"Value":"88L"}}],[{"Literal":{"Value":"89L"}}],[{"Literal":{"Value":"90L"}}]]}}},{"DisplayName":"91-100","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"a"}},"Property":"age"}}],"Values":[[{"Literal":{"Value":"91L"}}],[{"Literal":{"Value":"92L"}}],[{"Literal":{"Value":"93L"}}],[{"Literal":{"Value":"94L"}}],[{"Literal":{"Value":"95L"}}],[{"Literal":{"Value":"96L"}}],[{"Literal":{"Value":"97L"}}],[{"Literal":{"Value":"98L"}}],[{"Literal":{"Value":"99L"}}],[{"Literal":{"Value":"100L"}}]]}}},{"DisplayName":"above 100","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"a"}},"Property":"age"}}],"Values":[[{"Literal":{"Value":"101L"}}],[{"Literal":{"Value":"102L"}}],[{"Literal":{"Value":"103L"}}],[{"Literal":{"Value":"104L"}}],[{"Literal":{"Value":"105L"}}],[{"Literal":{"Value":"106L"}}],[{"Literal":{"Value":"107L"}}],[{"Literal":{"Value":"109L"}}],[{"Literal":{"Value":"110L"}}],[{"Literal":{"Value":"111L"}}],[{"Literal":{"Value":"112L"}}]]}}},{"DisplayName":"Other"}]}
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 6c1b738b-116d-47d4-8a75-147459066021
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Prefix
+		dataType: string
+		lineageTag: d30f92bf-04bc-4b01-86c2-30fe768c9943
+		summarizeBy: none
+		sourceColumn: Prefix
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstName
+		dataType: string
+		lineageTag: f4a8416b-d7e4-4f8d-a69c-89cc04a3f310
+		summarizeBy: none
+		sourceColumn: FirstName
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastName
+		dataType: string
+		lineageTag: b6c853cf-6d1a-4d37-9099-3e2e6657c9cf
+		summarizeBy: none
+		sourceColumn: LastName
+
+		annotation SummarizationSetBy = Automatic
+
+	column BirthDate
+		dataType: string
+		lineageTag: 5453faf4-9a0f-4c8e-bc8a-0c7ad478a99d
+		summarizeBy: none
+		sourceColumn: BirthDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column MaritalStatus
+		dataType: string
+		lineageTag: 8758c0c5-b92a-4c7b-b6dd-d9b66ac6b704
+		summarizeBy: none
+		sourceColumn: MaritalStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: ce0d7f18-b846-4fbd-9657-d1f36478506d
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmailAddress
+		dataType: string
+		lineageTag: 45f7b0dd-91c6-4467-8c80-e3f5b0f1c857
+		summarizeBy: none
+		sourceColumn: EmailAddress
+
+		annotation SummarizationSetBy = Automatic
+
+	column AnnualIncome
+		dataType: decimal
+		formatString: "₹"\ #,0.###############;#,0.###############\ -"₹";"₹"\ #,0.###############
+		lineageTag: a7749f8f-8117-44cb-8d9e-46466382e1b0
+		summarizeBy: none
+		sourceColumn: AnnualIncome
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-IN"}
+
+	column TotalChildren
+		dataType: int64
+		formatString: 0
+		lineageTag: 9a75cf14-5b76-4fe0-82e5-9e59c3f20900
+		summarizeBy: none
+		sourceColumn: TotalChildren
+
+		annotation SummarizationSetBy = Automatic
+
+	column EducationLevel
+		dataType: string
+		lineageTag: c4aeca91-5b73-476e-860b-5ac23158a9cc
+		summarizeBy: none
+		sourceColumn: EducationLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Occupation
+		dataType: string
+		lineageTag: 5aea2f28-b7fd-4ac1-9230-fa83c44d5fa2
+		summarizeBy: none
+		sourceColumn: Occupation
+
+		annotation SummarizationSetBy = Automatic
+
+	column HomeOwner
+		dataType: string
+		lineageTag: 063baa85-c919-4acb-8b45-17c17953d0f5
+		summarizeBy: none
+		sourceColumn: HomeOwner
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Full Name'
+		dataType: string
+		lineageTag: 517aeb60-ae01-4336-853d-673ad92bcb1c
+		summarizeBy: none
+		sourceColumn: Full Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Name'
+		dataType: string
+		lineageTag: cfbdf7a6-1270-4905-b42f-f4fc1497d55e
+		summarizeBy: none
+		sourceColumn: User Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Domain
+		dataType: string
+		lineageTag: 564268e2-5010-436e-84f0-5be34d7824f7
+		summarizeBy: none
+		sourceColumn: Domain
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Income Level'
+		dataType: string
+		lineageTag: 0dc033a4-ee16-4819-9509-38cda29806f8
+		summarizeBy: none
+		sourceColumn: Income Level
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'AW_Customers (dim)-213131fc-255f-42fc-b469-31bdc5a14899' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("E:\POWER BI Class\AdventureWorks CSV Files\AdventureWorks_Customers.csv"),[Delimiter=",", Columns=13, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CustomerKey", Int64.Type}, {"Prefix", type text}, {"FirstName", type text}, {"LastName", type text}, {"BirthDate", type text}, {"MaritalStatus", type text}, {"Gender", type text}, {"EmailAddress", type text}, {"AnnualIncome", type text}, {"TotalChildren", Int64.Type}, {"EducationLevel", type text}, {"Occupation", type text}, {"HomeOwner", type text}}),
+				    #"Capitalized Each Word" = Table.TransformColumns(#"Changed Type",{{"Prefix", Text.Proper, type text}, {"FirstName", Text.Proper, type text}, {"LastName", Text.Proper, type text}}),
+				    #"Inserted Merged Column" = Table.AddColumn(#"Capitalized Each Word", "Merged", each Text.Combine({[Prefix], [FirstName], [LastName]}, " "), type text),
+				    #"Inserted Text Before Delimiter" = Table.AddColumn(#"Inserted Merged Column", "Text Before Delimiter", each Text.BeforeDelimiter([EmailAddress], "@"), type text),
+				    #"Renamed Columns" = Table.RenameColumns(#"Inserted Text Before Delimiter",{{"Merged", "Full Name"}, {"Text Before Delimiter", "User Name"}}),
+				    #"Inserted Text Between Delimiters" = Table.AddColumn(#"Renamed Columns", "Text Between Delimiters", each Text.BetweenDelimiters([EmailAddress], "@", "."), type text),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Inserted Text Between Delimiters",{{"Text Between Delimiters", "Domain"}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns1",{{"AnnualIncome", Currency.Type}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Changed Type1", "Income Level", each if [AnnualIncome] >= 150000 then "Very High" else if [AnnualIncome] >= 100000 then "High" else if [AnnualIncome] >= 50000 then "Average" else "Low")
+				in
+				    #"Added Conditional Column"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

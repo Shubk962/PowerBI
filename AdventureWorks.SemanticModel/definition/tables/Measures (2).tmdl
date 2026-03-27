@@ -1,0 +1,101 @@
+table 'Measures (2)'
+	lineageTag: c5af016c-6705-4f61-b901-ed58e3e3204d
+
+	measure 'Total return' = COUNTA('AW_Returns (Fact)'[ReturnQuantity])
+		formatString: 0
+		lineageTag: c7bc48cd-eaed-4fd3-8965-ae3e6c21ce33
+
+	measure 'total cost' = SUMX(Sales_Fact,Sales_Fact[OrderQuantity]*RELATED(AW_Products[ProductCost]))
+		lineageTag: bcbde4c1-8462-4e4b-a754-05020d3f020d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Order' = ```
+			DISTINCTCOUNT(Sales_Fact[OrderNumber]) 
+			```
+		formatString: 0
+		lineageTag: 550ca793-4fe2-4e44-be52-72159e00e249
+
+	measure 'Total profit' = [Total revenue]-[total cost]
+		lineageTag: 22b9ff64-cf8b-49e0-a997-a5978145de8b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total revenue' = SUMX(Sales_Fact,Sales_Fact[OrderQuantity]*RELATED(AW_Products[ProductPrice]))
+		lineageTag: 51cfbc56-f4d6-4099-a14e-60ea7770ad42
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Female Count' = CALCULATE(COUNT('AW_Customers (dim)'[Gender]),FILTER('AW_Customers (dim)','AW_Customers (dim)'[Gender]="F"))
+		formatString: 0
+		lineageTag: 21bea625-ef2b-4bb2-9a16-42c67fcff2e4
+
+	measure 'Male count' = CALCULATE(COUNT('AW_Customers (dim)'[Gender]),FILTER('AW_Customers (dim)','AW_Customers (dim)'[Gender]="M"))
+		formatString: 0
+		lineageTag: 531da7e8-2a23-4ece-a1a0-cf2e37b94d69
+
+	measure 'previous month order' = CALCULATE([Total Order],DATEADD(AW_Calendar[Date],-1,month))
+		formatString: 0
+		lineageTag: f1498de2-e092-44cc-b403-075392e7f889
+
+	measure 'Target Order' = [previous month order]*1.1
+		lineageTag: b8bd9741-71bb-4596-858a-b1f64e0e28d2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Target Revenue' = [previous month revenue]*1.1
+		lineageTag: c0f1f736-73ea-4bf4-88cd-c735de0cd773
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Target Return' = [previous month return]*0.9
+		lineageTag: fcd25bc1-b612-4876-8ba6-7cc3b5d80d63
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Malecount = CALCULATE ( COUNTROWS ( 'AW_Customers (dim)' ),'AW_Customers (dim)'[Gender] = "M" )
+		formatString: 0
+		lineageTag: 0f95f9b7-42d4-4d24-b2ba-6e69689aacab
+
+	measure 'previous month return' = CALCULATE([Total return],DATEADD(AW_Calendar[Date],-1,month))
+		formatString: 0
+		lineageTag: cb93cee7-caed-4347-bb1a-3f176eb6d8d5
+
+	measure 'Return Rate' = DIVIDE([Total return],[Total Order])
+		lineageTag: afb897c3-eadd-4a72-806e-9043385cbfcb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure prvmonret = CALCULATE([Total return],PREVIOUSMONTH('AW_Returns (Fact)'[ReturnDate]))
+		formatString: 0
+		lineageTag: 238a4d92-adc9-4239-a27c-4400daf8e4ff
+
+	measure 'previous month revenue' = CALCULATE([Total revenue],DATEADD(AW_Calendar[Date],-1,month))
+		lineageTag: f1107d48-ff4f-4783-80c4-027cea8f677c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Adjustment profit' = [Total profit]*(1+'Adjustment Profit'[Adjustment Profit Value])
+		lineageTag: 40e06109-4248-4d08-b485-be2fbebc6fad
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column1
+		dataType: string
+		lineageTag: 3b689823-3ceb-4b82-9f04-a5810962f6b9
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Measures (2)-24884d31-bd69-432c-b95f-93e47f72056c' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

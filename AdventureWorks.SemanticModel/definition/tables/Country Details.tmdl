@@ -1,0 +1,82 @@
+table 'Country Details'
+	lineageTag: 9954c5f5-fc57-417a-ace1-3cfdc2fd0dab
+
+	column Country
+		dataType: string
+		lineageTag: d67610ae-a96a-4e7e-b0f0-ad2466caca18
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column Email
+		dataType: string
+		lineageTag: 76d8af33-4edc-478e-bef0-4c7618f9a4e7
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column1
+		dataType: string
+		lineageTag: 346c7a92-cdf6-45c5-91d8-1becf4d4a662
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column2
+		dataType: string
+		lineageTag: 15e9cbc6-f630-4435-804b-20683a915d93
+		summarizeBy: none
+		sourceColumn: Column2
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column4
+		dataType: string
+		lineageTag: 49116234-9a76-43a5-8d76-f7cc528a5bc2
+		summarizeBy: none
+		sourceColumn: Column4
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column6
+		dataType: string
+		lineageTag: 5bb62b4e-2156-4562-a232-afdaeb1174e7
+		summarizeBy: none
+		sourceColumn: Column6
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column7
+		dataType: string
+		lineageTag: a68a749f-a514-4ee7-a7df-8bf7932f1d50
+		summarizeBy: none
+		sourceColumn: Column7
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column8
+		dataType: string
+		lineageTag: 73dc6a91-9b7c-4f29-b535-a75f38ee7ff1
+		summarizeBy: none
+		sourceColumn: Column8
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Country Details-d9fbcf3a-a00c-45c9-8f66-768b114ca0db' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("hZDBCsIwEER/RXIufkNE1IM3wVPpYZqkSWyyK0kq9O+NxaMY2Ms7vJlh+17cyRejd7mgmCw6gVFJG+HDXnGs/PuGrhdHEDQqqcnKFY65qZwTSJmtxXnpuATm+a/xnXf1ZPUWHpFmOUGN1Wz2HZZcUvCfkTc8/Es+QRpN7WJSxFrpFAKTrI8JDWl4Aw==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Country = _t, Email = _t, Column1 = _t, Column2 = _t, Column3 = _t, Column4 = _t, Column5 = _t, Column6 = _t, Column7 = _t, Column8 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Country", type text}, {"Email", type text}, {"Column1", type text}, {"Column2", type text}, {"Column3", type text}, {"Column4", type text}, {"Column5", type text}, {"Column6", type text}, {"Column7", type text}, {"Column8", type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type","Rajiv@panda.com","lisida9583@xitudy.com",Replacer.ReplaceText,{"Email"}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Replaced Value",{"Column3", "Column5"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

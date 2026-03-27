@@ -1,0 +1,28 @@
+table 'Adjustment Profit'
+	lineageTag: 25ec3d59-f2bb-43d2-8756-999aecdef197
+
+	measure 'Adjustment Profit Value' = SELECTEDVALUE('Adjustment Profit'[Adjustment Profit])
+		lineageTag: 015d0c64-38ba-4fc4-ae4f-848f4fabd5fe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Adjustment Profit'
+		lineageTag: 9dd0cdf9-32cf-4d28-a6f0-c3c76d8436d4
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Adjustment Profit-144417ec-9152-4094-9cf5-7c20570bf89a' = calculated
+		mode: import
+		source = GENERATESERIES(-1, 1, 0.1)
+
+	annotation PBI_Id = 63c819f2d82e4de19d197c878f8965b4
+

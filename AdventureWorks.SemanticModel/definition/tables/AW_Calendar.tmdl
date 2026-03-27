@@ -1,0 +1,152 @@
+table AW_Calendar
+	lineageTag: 9832b2e5-85cf-4086-91e4-048806dc4c70
+
+	measure color = IF([Total return]>20,"#00FF00","#0000FF")
+		lineageTag: ae9cefd6-1268-46e8-860b-e2fd4bba9777
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: bc591fcc-c99a-4ab5-9de0-4c6ed9dfd5ff
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: a486c4bc-e71c-49fd-a290-51c013a80478
+			defaultHierarchy: LocalDateTable_3b11f79c-5196-4485-8514-969349bec4ea.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 796f5b3a-f13f-437d-84c8-856e25cd9b50
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: int64
+		formatString: 0
+		lineageTag: 922ebe51-7352-4750-afd4-927a6b4eaf8f
+		summarizeBy: sum
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name'
+		dataType: string
+		lineageTag: 7ee660ea-576e-4da2-8089-e25704914697
+		summarizeBy: none
+		sourceColumn: Day Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Week'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 957b60c0-58c7-4e50-98f6-0fddeb1a39e4
+		summarizeBy: none
+		sourceColumn: Start of Week
+
+		variation Variation
+			isDefault
+			relationship: a5b18004-c1c7-4694-b0f6-cec7019eccc9
+			defaultHierarchy: LocalDateTable_a749e3df-ee42-445c-a4b5-2c890eeca97a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Start of Month'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 09b11117-ad64-4085-adde-e61bf57ff3f9
+		summarizeBy: none
+		sourceColumn: Start of Month
+
+		variation Variation
+			isDefault
+			relationship: 8dc903a5-e06b-4a5b-ac8e-30cc7729db4c
+			defaultHierarchy: LocalDateTable_dd408661-938b-42bf-be92-e15aac99b3e3.'Date Hierarchy'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: eb7cf13e-f05f-474d-bc91-57d0f7f45460
+		summarizeBy: none
+		sourceColumn: Month Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Name' = YEAR(AW_Calendar[Date])
+		formatString: 0
+		lineageTag: 8150e4e5-3f11-4ace-81b8-a977ae067307
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month_No = ```
+			MONTH(AW_Calendar[Date]) 
+			```
+		formatString: 0
+		lineageTag: b16d04a1-42ff-445b-9015-747cc0d27958
+		summarizeBy: sum
+		sortByColumn: 'Month Name'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month format' = FORMAT(AW_Calendar[Date],"mmm")
+		lineageTag: fd05193e-4956-4f5b-a3f7-bc207cef4a03
+		summarizeBy: none
+		sortByColumn: Month_No
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of week' = WEEKDAY(AW_Calendar[Date],2)
+		formatString: 0
+		lineageTag: 74913c0c-3857-4a36-9fef-2afa5574d67f
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'short date' = UPPER(LEFT(AW_Calendar[Month Name],3))
+		lineageTag: 4f7d00a5-e2d5-4aa0-ae18-68a037acbd4d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition AW_Calendar-640a5116-441d-44a1-80c0-356a1d211737 = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("E:\POWER BI Class\AdventureWorks CSV Files\AdventureWorks_Calendar.csv"),[Delimiter=",", Columns=1, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}}),
+				    #"Inserted Year" = Table.AddColumn(#"Changed Type", "Year", each Date.Year([Date]), Int64.Type),
+				    #"Inserted Day" = Table.AddColumn(#"Inserted Year", "Day", each Date.Day([Date]), Int64.Type),
+				    #"Inserted Day Name" = Table.AddColumn(#"Inserted Day", "Day Name", each Date.DayOfWeekName([Date]), type text),
+				    #"Inserted Start of Week" = Table.AddColumn(#"Inserted Day Name", "Start of Week", each Date.StartOfWeek([Date]), type date),
+				    #"Inserted Start of Month" = Table.AddColumn(#"Inserted Start of Week", "Start of Month", each Date.StartOfMonth([Date]), type date),
+				    #"Inserted Month Name" = Table.AddColumn(#"Inserted Start of Month", "Month Name", each Date.MonthName([Date]), type text),
+				    #"Filtered Rows" = Table.SelectRows(#"Inserted Month Name", each [Year] <> null and [Year] <> "")
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

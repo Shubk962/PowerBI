@@ -1,0 +1,103 @@
+table Sales_Fact
+	lineageTag: 9fcbbdd3-2486-4db3-b369-c1fc7df35aa6
+
+	column OrderDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 2c2b6f19-fa4f-4900-aec7-203f9a549199
+		summarizeBy: none
+		sourceColumn: OrderDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column StockDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b7cb0ee3-39d4-400a-80e2-1f2d4cefddbd
+		summarizeBy: none
+		sourceColumn: StockDate
+
+		variation Variation
+			isDefault
+			relationship: d5d51200-11a9-45ad-a651-dfd60c463882
+			defaultHierarchy: LocalDateTable_87b8252b-f1f6-45f4-8427-b55fc5ecc745.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column OrderNumber
+		dataType: string
+		lineageTag: 15bee0b5-7a2a-46cb-8f88-141d637261c8
+		summarizeBy: none
+		sourceColumn: OrderNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 5a431a63-e888-439b-82cb-6432958832f8
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 12a81966-6b1f-4343-8d46-b7f0e4c0f485
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryKey
+		dataType: int64
+		formatString: 0
+		lineageTag: a277af60-58f7-43ec-9e18-444b627f3bd4
+		summarizeBy: none
+		sourceColumn: TerritoryKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderLineItem
+		dataType: int64
+		formatString: 0
+		lineageTag: 6d54d176-129a-4d1b-98a7-9d91f33d9492
+		summarizeBy: sum
+		sourceColumn: OrderLineItem
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderQuantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 733a95c8-71f5-4a83-9d50-d0234963e333
+		summarizeBy: sum
+		sourceColumn: OrderQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_Status
+		dataType: string
+		lineageTag: 50c522c3-8a15-435a-afbf-dbbf907ea329
+		summarizeBy: none
+		sourceColumn: Order_Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sales_Fact-4871a193-88e3-4084-8e68-0c5bdb4543e0 = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({AW_Sales_2015, AW_Sales_2016, AW_Sales_2017}),
+				    #"Added Conditional Column" = Table.AddColumn(Source, "Custom", each if [OrderQuantity] = 1 then "single" else "Multiple"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Conditional Column",{{"Custom", "Order_Status"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+

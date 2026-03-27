@@ -1,0 +1,90 @@
+relationship 8c55b512-edcc-4b39-80d2-07a7ebc9eca1
+	joinOnDateBehavior: datePartOnly
+	fromColumn: AW_Sales_2017.OrderDate
+	toColumn: LocalDateTable_badf9386-9da6-40bd-9593-7ec75616f28b.Date
+
+relationship a486c4bc-e71c-49fd-a290-51c013a80478
+	joinOnDateBehavior: datePartOnly
+	fromColumn: AW_Calendar.Date
+	toColumn: LocalDateTable_3b11f79c-5196-4485-8514-969349bec4ea.Date
+
+relationship a5b18004-c1c7-4694-b0f6-cec7019eccc9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: AW_Calendar.'Start of Week'
+	toColumn: LocalDateTable_a749e3df-ee42-445c-a4b5-2c890eeca97a.Date
+
+relationship 8dc903a5-e06b-4a5b-ac8e-30cc7729db4c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: AW_Calendar.'Start of Month'
+	toColumn: LocalDateTable_dd408661-938b-42bf-be92-e15aac99b3e3.Date
+
+relationship d5d51200-11a9-45ad-a651-dfd60c463882
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Sales_Fact.StockDate
+	toColumn: LocalDateTable_87b8252b-f1f6-45f4-8427-b55fc5ecc745.Date
+
+relationship 39d7314d-9be4-4571-a522-39a22055ac9d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: AW_Sales_2015.OrderDate
+	toColumn: LocalDateTable_848e75b7-e597-4fc9-a61e-e9339f82a400.Date
+
+relationship d35d73d5-2a5d-4029-ad39-7d1fd26a1130
+	joinOnDateBehavior: datePartOnly
+	fromColumn: AW_Sales_2015.StockDate
+	toColumn: LocalDateTable_2d63c898-615f-4eb0-95b3-3181d6af2fa7.Date
+
+relationship 5252b27e-a8b2-42b6-9398-0068f421e3ce
+	joinOnDateBehavior: datePartOnly
+	fromColumn: AW_Sales_2016.OrderDate
+	toColumn: LocalDateTable_613cdf2d-2ebc-41a3-b926-3b625cdc45db.Date
+
+relationship 4e9dabfe-1402-4cc6-87e6-ed357ee333cc
+	joinOnDateBehavior: datePartOnly
+	fromColumn: AW_Sales_2016.StockDate
+	toColumn: LocalDateTable_300c7e0d-fe7f-49f9-96ff-5bb01ed1a97b.Date
+
+relationship 609575a8-44a6-4008-bea5-1b19435b6c0f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: AW_Sales_2017.StockDate
+	toColumn: LocalDateTable_e0d8aa63-7ecd-44ca-a363-b2fe2c3825b2.Date
+
+relationship ec259d46-efe7-4cbb-a539-122f37531cf5
+	fromColumn: AW_Product_Subcategories.ProductCategoryKey
+	toColumn: 'AW_Product_Categories (dim)'.ProductCategoryKey
+
+relationship 3c67ea17-971a-43be-9bf5-584cdc849957
+	fromColumn: AW_Products.ProductSubcategoryKey
+	toColumn: AW_Product_Subcategories.ProductSubcategoryKey
+
+relationship 7ef38227-3417-495f-990c-365ca9043283
+	fromColumn: 'AW_Returns (Fact)'.ReturnDate
+	toColumn: AW_Calendar.Date
+
+relationship 5b35c7ff-2414-44ba-a4d0-ee44b4831fbb
+	fromColumn: 'AW_Returns (Fact)'.TerritoryKey
+	toColumn: AW_Territories.SalesTerritoryKey
+
+relationship ed42a799-ab28-4906-a398-33b00bdfbdb4
+	fromColumn: Sales_Fact.OrderDate
+	toColumn: AW_Calendar.Date
+
+relationship c69898f4-4810-4ee5-a561-6669c4fa5a92
+	fromColumn: Sales_Fact.ProductKey
+	toColumn: AW_Products.ProductKey
+
+relationship 8a784f9f-ba32-4a96-9382-cd0aa61c16db
+	fromColumn: Sales_Fact.TerritoryKey
+	toColumn: AW_Territories.SalesTerritoryKey
+
+relationship eef5abf3-d31e-4402-9d3e-598701d0c6e2
+	fromColumn: 'AW_Returns (Fact)'.ProductKey
+	toColumn: AW_Products.ProductKey
+
+relationship 1cc81fb7-5f62-4f93-815b-3835e219b06c
+	fromColumn: Sales_Fact.CustomerKey
+	toColumn: 'AW_Customers (dim)'.CustomerKey
+
+relationship 1cc9e267-839f-4af4-ab8b-c6abc3258a3a
+	fromColumn: AW_Territories.Country
+	toColumn: 'Country Details'.Country
+
